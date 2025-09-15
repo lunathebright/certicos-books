@@ -5,14 +5,14 @@ export default function Header() {
   const location = useLocation();
 
   return (
-    <nav className="flex p-6">
+    <header className="flex p-6">
       <h1 className="text-title1">CERTICOS BOOKS</h1>
-      <ul className="flex gap-[56px] mx-auto -translate-x-[200px]">
-        {navItems.map((item) => (
-          <li key={item.path}>
+      <nav className="flex gap-[56px] mx-auto -translate-x-[200px]">
+        {Object.values(navItems).map((item) => (
+          <div key={item.path}>
             <Link
               to={item.path}
-              className={`py-1 text-body1 border-b ${
+              className={`py-1 text-body1 border-b transition-colors duration-300 ${
                 location.pathname === item.path
                   ? "border-b-primary"
                   : "border-b-transparent"
@@ -20,9 +20,9 @@ export default function Header() {
             >
               {item.name}
             </Link>
-          </li>
+          </div>
         ))}
-      </ul>
-    </nav>
+      </nav>
+    </header>
   );
 }
