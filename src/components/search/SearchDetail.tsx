@@ -1,4 +1,5 @@
 import { detailItems } from "../../data/constants/search";
+import Button from "../common/base/Button";
 import closeIcon from "/src/assets/icons/close.svg";
 
 export default function SearchDetail() {
@@ -20,9 +21,9 @@ export default function SearchDetail() {
           className="w-full pl-[9px] pb-1.5 border-b border-b-primary text-caption text-[14px]"
         />
       </div>
-      <button className="w-full py-[6px] bg-primary rounded-[8px] text-[14px] text-white">
+      <Button size="s" isFullWidth={true}>
         검색하기
-      </button>
+      </Button>
       <img
         src={closeIcon}
         alt="닫기"
