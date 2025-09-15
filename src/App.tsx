@@ -5,7 +5,7 @@ import Header from "./components/Header";
 
 function App() {
   return (
-    <div className="min-w-[950px]">
+    <div className="min-w-[960px]">
       <Header />
       <Routes>
         <Route path="/" element={<Search />} />

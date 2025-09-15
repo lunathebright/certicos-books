@@ -1,5 +1,6 @@
 import Layout from "../components/common/Layout";
 import SearchBox from "../components/search/SearchBox";
+import SearchResult from "../components/search/SearchResult";
 import { navItems } from "../data/constants/nav";
 
 export default function Search() {
@@ -12,6 +13,7 @@ export default function Search() {
           건
         </p>
       </>
+      <SearchResult />
     </Layout>
   );
 }
