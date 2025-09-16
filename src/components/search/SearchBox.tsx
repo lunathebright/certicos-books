@@ -3,18 +3,27 @@ import searchIcon from "/src/assets/icons/search.svg";
 import SearchHistory from "./SearchHistory";
 import SearchDetail from "./SearchDetail";
 
-export default function SearchBox() {
+interface Props {
+  keyword: string;
+  setKeyword: React.Dispatch<React.SetStateAction<string>>;
+  handleSearch: () => void;
+}
+
+export default function SearchBox({
+  keyword,
+  setKeyword,
+  handleSearch,
+}: Props) {
   const [hasHistory, setHasHistory] = useState(false);
   const [isSearchDetailOpem, setIsSearchDetailOpen] = useState(false);
-  const [inputValue, setInputValue] = useState("");
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
+    setKeyword(e.target.value);
   };
 
   const onClickSearch = () => {
-    if (inputValue === "") return;
-    // search
+    if (keyword === "") return;
+    handleSearch();
   };
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -34,7 +43,7 @@ export default function SearchBox() {
         <input
           onChange={onChangeInput}
           onKeyDown={onKeyDown}
-          value={inputValue}
+          value={keyword}
           className={`w-[480px] py-2.5 pr-2.5 pl-12 bg-lightGrey text-textSubtitle ${
             hasHistory ? "rounded-t-[22px]" : "rounded-[22px]"
           } placeholder:text-caption placeholder:text-textSubtitle`}

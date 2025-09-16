@@ -1,8 +1,14 @@
 import { useState } from "react";
 import Button from "./base/Button";
 import arrow from "/src/assets/icons/arrowDown.svg";
+import type { KakaoBook } from "../../types/kakao";
+import { breakLines } from "../../utils";
 
-export default function ListItem() {
+interface Props {
+  data: KakaoBook;
+}
+
+export default function ListItem({ data }: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
   const onClickViewDetail = () => {
@@ -18,7 +24,8 @@ export default function ListItem() {
       <div className={`flex flex-1 ${!isOpen && "items-center"}`}>
         <div className="flex-shrink-0">
           <img
-            alt=""
+            src={data.thumbnail}
+            alt={`${data.title} thumbnail`}
             className={`${
               isOpen ? "w-[210px] h-[280px]" : "w-[48px] h-[68px]"
             }`}
@@ -27,26 +34,17 @@ export default function ListItem() {
         </div>
         <div className={`${isOpen ? "ml-[32px] pt-[20px]" : "ml-[48px]"}`}>
           <div className="flex items-center">
-            <p className="text-title3">노르웨이의 숲</p>
+            <p className="text-title3">{data.title}</p>
             <p className="text-body2 text-textSecondary ml-[16px]">
-              무라카미 하루키
+              {data.authors.join(", ")}
             </p>
           </div>
           {isOpen && (
             <div>
               <p className="pt-[16px] pb-[12px] text-body2bold">책 소개</p>
-              <p className="text-small">
-                “나를 언제까지나 잊지 마, 내가 여기 있었다는 걸 기억해 줘.”
-                하루키 월드의 빛나는 다이아몬드 무라카미 하루키를 만나기 위해
-                가장 먼저 읽어야 할 책! 페이지를 처음 펼치는 오늘의 젊음들에게,
-                그리고 오랜 기억 속에 책의 한 구절을 간직하고 있는 어제의
-                젊음들에게, 한결같은 울림으로 예민하고 섬세한 청춘의 감성을
-                전하며 영원한 필독서로 사랑받고 있는 무라카미 하루키의 대표작
-                『노르웨이의 숲』. 1989년 『상실의 시대』라는 제명으로 처음
-                출간된 이래 우리 출판 사상 최장기 베스트셀러를 기록하며 하나의
-                사건으로 남은 소설, 『노르웨이의 숲』이 민음사 세계문학전집에
-                이어 단행본으로 출간되었다.
-              </p>
+              <div className="flex flex-col gap-2 text-small">
+                {breakLines(data.contents)}
+              </div>
             </div>
           )}
         </div>
@@ -60,12 +58,14 @@ export default function ListItem() {
             isOpen && "absolute bottom-[82px] flex flex-col items-end"
           }`}
         >
-          {isOpen && (
+          {isOpen && data.sale_price > 0 && (
             <p className="flex items-center gap-[8px] text-title3 font-light">
               <span className="text-small pt-[2px] text-textSubtitle">
                 원가
               </span>
-              16,000원
+              <span className="line-through">
+                {data.price.toLocaleString()}
+              </span>
             </p>
           )}
           <p
@@ -77,10 +77,15 @@ export default function ListItem() {
           >
             {isOpen && (
               <span className="text-small pt-[2px] text-textSubtitle">
-                할인가
+                {data.sale_price > 0 ? "할인가" : "원가"}
               </span>
             )}
-            13,300원
+            <span>
+              {(data.sale_price > 0
+                ? data.sale_price
+                : data.price
+              ).toLocaleString()}
+            </span>
           </p>
         </div>
         <div
