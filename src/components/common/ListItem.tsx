@@ -3,16 +3,31 @@ import Button from "./base/Button";
 import arrow from "/src/assets/icons/arrowDown.svg";
 import type { KakaoBook } from "../../types/kakao";
 import { breakLines } from "../../utils";
+import likeFill from "/src/assets/icons/likeFill.svg";
+import likeLine from "/src/assets/icons/likeLine.svg";
 
 interface Props {
   data: KakaoBook;
+  setWishes: React.Dispatch<React.SetStateAction<KakaoBook[]>>;
+  isWished: boolean;
 }
 
-export default function ListItem({ data }: Props) {
+export default function ListItem({ data, setWishes, isWished }: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
   const onClickViewDetail = () => {
     setIsOpen((prev) => !prev);
+  };
+
+  const onClickWish = () => {
+    setWishes((prev) => {
+      const isInclude = prev.find((item) => item.isbn === data.isbn);
+      if (isInclude) {
+        return prev.filter((item) => item.isbn !== data.isbn);
+      } else {
+        return [...prev, data];
+      }
+    });
   };
 
   return (
@@ -22,7 +37,7 @@ export default function ListItem({ data }: Props) {
     ${isOpen ? "h-[344px] pt-[24px] pb-[40px]" : "h-[100px]"}`}
     >
       <div className={`flex flex-1 ${!isOpen && "items-center"}`}>
-        <div className="flex-shrink-0">
+        <div className="relative flex-shrink-0">
           <img
             src={data.thumbnail || undefined}
             alt={`${data.title} thumbnail`}
@@ -30,7 +45,15 @@ export default function ListItem({ data }: Props) {
               isOpen ? "w-[210px] h-[280px]" : "w-[48px] h-[68px]"
             }`}
           />
-          {/* wish icon */}
+          <button
+            onClick={onClickWish}
+            className="absolute top-[1.5px] right-[2px] w-[16px] aspect-square"
+          >
+            <img
+              src={isWished ? likeFill : likeLine}
+              className="w-full h-full"
+            />
+          </button>
         </div>
         <div className={`${isOpen ? "ml-[32px] pt-[20px]" : "ml-[48px]"}`}>
           <div className="flex items-center">
