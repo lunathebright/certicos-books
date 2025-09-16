@@ -1,18 +1,20 @@
-import { useState } from "react";
 import None from "../common/None";
 import ListItem from "../common/ListItem";
+import type { KakaoBook } from "../../types/kakao";
 
-export default function WishResult() {
-  const [list, setList] = useState([]);
+interface Props {
+  data: KakaoBook[];
+}
 
+export default function WishResult({ data }: Props) {
   return (
     <>
-      {list.length === 0 ? (
+      {data.length === 0 ? (
         <None text="찜한 책이 없습니다." />
       ) : (
         <>
-          {[...Array(10)].map((_, idx) => (
-            <ListItem key={idx} />
+          {data.map((book) => (
+            <ListItem data={book} key={book.isbn} />
           ))}
         </>
       )}

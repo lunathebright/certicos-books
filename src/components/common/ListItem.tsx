@@ -1,34 +1,46 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "./base/Button";
 import arrow from "/src/assets/icons/arrowDown.svg";
 import type { KakaoBook } from "../../types/kakao";
 import { breakLines } from "../../utils";
 import likeFill from "/src/assets/icons/likeFill.svg";
 import likeLine from "/src/assets/icons/likeLine.svg";
+import { wishStorage } from "../../data/constants/wish";
 
 interface Props {
   data: KakaoBook;
-  setWishes: React.Dispatch<React.SetStateAction<KakaoBook[]>>;
-  isWished: boolean;
 }
 
-export default function ListItem({ data, setWishes, isWished }: Props) {
+export default function ListItem({ data }: Props) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isWished, setIsWished] = useState(false);
 
   const onClickViewDetail = () => {
     setIsOpen((prev) => !prev);
   };
 
   const onClickWish = () => {
-    setWishes((prev) => {
-      const isInclude = prev.find((item) => item.isbn === data.isbn);
-      if (isInclude) {
-        return prev.filter((item) => item.isbn !== data.isbn);
-      } else {
-        return [...prev, data];
-      }
-    });
+    const storageItems = localStorage.getItem(wishStorage);
+    let wishes: KakaoBook[] = storageItems ? JSON.parse(storageItems) : [];
+
+    if (isWished) {
+      wishes = wishes.filter((book) => book.isbn !== data.isbn);
+      setIsWished(false);
+    } else {
+      wishes.unshift(data);
+      setIsWished(true);
+    }
+
+    localStorage.setItem(wishStorage, JSON.stringify(wishes));
   };
+
+  useEffect(() => {
+    const wishes = localStorage.getItem(wishStorage);
+    if (wishes) {
+      const parsedWishes: KakaoBook[] = JSON.parse(wishes) as KakaoBook[];
+      setIsWished(parsedWishes.some((book) => book.isbn === data.isbn));
+    }
+  }, [data.isbn]);
 
   return (
     <li
@@ -47,7 +59,12 @@ export default function ListItem({ data, setWishes, isWished }: Props) {
           />
           <button
             onClick={onClickWish}
-            className="absolute top-[1.5px] right-[2px] w-[16px] aspect-square"
+            className={`absolute aspect-square
+              ${
+                isOpen
+                  ? "w-[24px] top-[4px] right-[4px]"
+                  : "w-[16px] top-[1.5px] right-[2px]"
+              }`}
           >
             <img
               src={isWished ? likeFill : likeLine}
