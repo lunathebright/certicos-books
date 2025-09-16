@@ -10,6 +10,7 @@ interface Props {
   setSearchTarget: React.Dispatch<React.SetStateAction<TSearchTarget>>;
   refetchDetail: () => void;
   setKeyword: React.Dispatch<React.SetStateAction<string>>;
+  setIsSearchDetailOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function SearchDetail({
@@ -19,6 +20,7 @@ export default function SearchDetail({
   setSearchTarget,
   refetchDetail,
   setKeyword,
+  setIsSearchDetailOpen,
 }: Props) {
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDetailKeyword(e.target.value);
@@ -32,6 +34,13 @@ export default function SearchDetail({
     if (!detailKeyword) return;
     setKeyword("");
     refetchDetail();
+    setIsSearchDetailOpen(false);
+  };
+
+  const onClickClose = () => {
+    setIsSearchDetailOpen(false);
+    setDetailKeyword("");
+    setSearchTarget(detailItems[0].id as TSearchTarget);
   };
 
   return (
@@ -61,11 +70,13 @@ export default function SearchDetail({
       <Button onClick={onClickSearch} size="s" isFullWidth={true}>
         검색하기
       </Button>
-      <img
-        src={closeIcon}
-        alt="닫기"
-        className="absolute top-[8px] right-[8px] w-[20px] h-[20px]"
-      />
+      <button onClick={onClickClose}>
+        <img
+          src={closeIcon}
+          alt="닫기"
+          className="absolute top-[8px] right-[8px] w-[20px] h-[20px]"
+        />
+      </button>
     </div>
   );
 }

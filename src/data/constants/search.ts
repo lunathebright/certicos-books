@@ -12,3 +12,5 @@ export const detailItems = [
     name: "출판사",
   },
 ];
+
+export const historyStorage = "searchHistory";
