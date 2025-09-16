@@ -4,7 +4,7 @@ export const detailItems = [
     name: "제목",
   },
   {
-    id: "author",
+    id: "person",
     name: "저자명",
   },
   {

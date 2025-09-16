@@ -24,7 +24,7 @@ export default function ListItem({ data }: Props) {
       <div className={`flex flex-1 ${!isOpen && "items-center"}`}>
         <div className="flex-shrink-0">
           <img
-            src={data.thumbnail}
+            src={data.thumbnail || undefined}
             alt={`${data.title} thumbnail`}
             className={`${
               isOpen ? "w-[210px] h-[280px]" : "w-[48px] h-[68px]"

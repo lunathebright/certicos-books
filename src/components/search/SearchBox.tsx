@@ -2,17 +2,29 @@ import { useState } from "react";
 import searchIcon from "/src/assets/icons/search.svg";
 import SearchHistory from "./SearchHistory";
 import SearchDetail from "./SearchDetail";
+import type { TSearchTarget } from "../../types";
+import { detailItems } from "../../data/constants/search";
 
 interface Props {
   keyword: string;
   setKeyword: React.Dispatch<React.SetStateAction<string>>;
   handleSearch: () => void;
+  detailKeyword: string;
+  setDetailKeyword: React.Dispatch<React.SetStateAction<string>>;
+  searchTarget: TSearchTarget;
+  setSearchTarget: React.Dispatch<React.SetStateAction<TSearchTarget>>;
+  refetchDetail: () => void;
 }
 
 export default function SearchBox({
   keyword,
   setKeyword,
   handleSearch,
+  detailKeyword,
+  setDetailKeyword,
+  searchTarget,
+  setSearchTarget,
+  refetchDetail,
 }: Props) {
   const [hasHistory, setHasHistory] = useState(false);
   const [isSearchDetailOpem, setIsSearchDetailOpen] = useState(false);
@@ -21,15 +33,23 @@ export default function SearchBox({
     setKeyword(e.target.value);
   };
 
-  const onClickSearch = () => {
-    if (keyword === "") return;
+  const onEnterSearch = () => {
+    if (!keyword) return;
+    if (detailKeyword) {
+      setDetailKeyword("");
+      setSearchTarget(detailItems[0].id as TSearchTarget);
+    }
     handleSearch();
   };
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      onClickSearch();
+      onEnterSearch();
     }
+  };
+
+  const onClickDetailSearch = () => {
+    setIsSearchDetailOpen(true);
   };
 
   return (
@@ -53,12 +73,21 @@ export default function SearchBox({
       </div>
       <div className="relative">
         <button
-          onClick={onClickSearch}
+          onClick={onClickDetailSearch}
           className="p-[10px] border border-textSubtitle rounded-[8px] text-body2 text-textSubtitle"
         >
           상세검색
         </button>
-        {isSearchDetailOpem && <SearchDetail />}
+        {isSearchDetailOpem && (
+          <SearchDetail
+            detailKeyword={detailKeyword}
+            setDetailKeyword={setDetailKeyword}
+            searchTarget={searchTarget}
+            setSearchTarget={setSearchTarget}
+            refetchDetail={refetchDetail}
+            setKeyword={setKeyword}
+          />
+        )}
       </div>
     </div>
   );
