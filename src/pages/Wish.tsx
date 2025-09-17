@@ -22,7 +22,7 @@ export default function Wish() {
           찜한 책 &nbsp;&nbsp; 총{" "}
           <span className="text-primary">{list.length || 0}</span>건
         </p>
-        <WishResult data={list} />
+        <WishResult data={list} pageSize={10} />
       </>
     </Layout>
   );

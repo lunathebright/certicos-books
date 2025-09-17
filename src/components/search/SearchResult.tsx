@@ -11,10 +11,10 @@ interface Props {
 
 export default function SearchResult({ data, fetchNextPage, hasMore }: Props) {
   const observerRef = useRef<IntersectionObserver | null>(null);
-  const lastItemRef = useRef<HTMLDivElement | null>(null);
+  const observedRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (!lastItemRef.current || !hasMore) return;
+    if (!observedRef.current || !hasMore) return;
 
     observerRef.current?.disconnect();
     observerRef.current = new IntersectionObserver((entries) => {
@@ -23,7 +23,7 @@ export default function SearchResult({ data, fetchNextPage, hasMore }: Props) {
       }
     });
 
-    observerRef.current.observe(lastItemRef.current);
+    observerRef.current.observe(observedRef.current);
 
     return () => observerRef.current?.disconnect();
   }, [data, hasMore, fetchNextPage]);
@@ -39,7 +39,7 @@ export default function SearchResult({ data, fetchNextPage, hasMore }: Props) {
               <ListItem data={book} key={book.isbn} />
             </div>
           ))}
-          <div ref={lastItemRef} className="mt-48"></div>
+          <div ref={observedRef} className="mt-48"></div>
         </>
       )}
     </>
