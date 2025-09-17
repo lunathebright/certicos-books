@@ -34,6 +34,10 @@ export default function ListItem({ data }: Props) {
     localStorage.setItem(storage_wish, JSON.stringify(wishes));
   };
 
+  const onClickBuy = (url: string) => {
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
   useEffect(() => {
     const wishes = localStorage.getItem(storage_wish);
     if (wishes) {
@@ -137,7 +141,9 @@ export default function ListItem({ data }: Props) {
           }`}
         >
           <div className={`${isOpen && "w-[240px]"}`}>
-            <Button isFullWidth={true}>구매하기</Button>
+            <Button onClick={() => onClickBuy(data.url)} isFullWidth={true}>
+              구매하기
+            </Button>
           </div>
           <Button
             onClick={onClickViewDetail}
