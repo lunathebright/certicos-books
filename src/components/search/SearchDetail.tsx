@@ -8,7 +8,7 @@ interface Props {
   setDetailKeyword: React.Dispatch<React.SetStateAction<string>>;
   searchTarget: TSearchTarget;
   setSearchTarget: React.Dispatch<React.SetStateAction<TSearchTarget>>;
-  refetchDetail: () => void;
+  handleSearch: (isDetail: boolean) => void;
   setKeyword: React.Dispatch<React.SetStateAction<string>>;
   setIsSearchDetailOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -18,7 +18,7 @@ export default function SearchDetail({
   setDetailKeyword,
   searchTarget,
   setSearchTarget,
-  refetchDetail,
+  handleSearch,
   setKeyword,
   setIsSearchDetailOpen,
 }: Props) {
@@ -33,7 +33,7 @@ export default function SearchDetail({
   const onClickSearch = () => {
     if (!detailKeyword) return;
     setKeyword("");
-    refetchDetail();
+    handleSearch(true);
     setIsSearchDetailOpen(false);
   };
 

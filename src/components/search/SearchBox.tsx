@@ -8,12 +8,11 @@ import { detailItems, storage_search } from "../../data/constants/search";
 interface Props {
   keyword: string;
   setKeyword: React.Dispatch<React.SetStateAction<string>>;
-  handleSearch: () => void;
+  handleSearch: (isDetail: boolean) => void;
   detailKeyword: string;
   setDetailKeyword: React.Dispatch<React.SetStateAction<string>>;
   searchTarget: TSearchTarget;
   setSearchTarget: React.Dispatch<React.SetStateAction<TSearchTarget>>;
-  refetchDetail: () => void;
 }
 
 export default function SearchBox({
@@ -24,7 +23,6 @@ export default function SearchBox({
   setDetailKeyword,
   searchTarget,
   setSearchTarget,
-  refetchDetail,
 }: Props) {
   const [isFocused, setIsFocused] = useState(false);
   const [searchHistory, setSearchHistory] = useState<string[]>([]);
@@ -55,9 +53,8 @@ export default function SearchBox({
     if (!keyword) return;
 
     if (detailKeyword) cleanDetailKeyword();
-
     updateHistory(keyword);
-    handleSearch();
+    handleSearch(false);
     setIsFocused(false);
   };
 
@@ -124,7 +121,7 @@ export default function SearchBox({
             setDetailKeyword={setDetailKeyword}
             searchTarget={searchTarget}
             setSearchTarget={setSearchTarget}
-            refetchDetail={refetchDetail}
+            handleSearch={handleSearch}
             setKeyword={setKeyword}
             setIsSearchDetailOpen={setIsSearchDetailOpen}
           />
