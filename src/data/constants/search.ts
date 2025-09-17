@@ -13,4 +13,4 @@ export const detailItems = [
   },
 ];
 
-export const historyStorage = "searchHistory";
+export const storage_search = "searchHistory";

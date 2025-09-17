@@ -5,7 +5,7 @@ import type { KakaoBook } from "../../types/kakao";
 import { breakLines } from "../../utils";
 import likeFill from "/src/assets/icons/likeFill.svg";
 import likeLine from "/src/assets/icons/likeLine.svg";
-import { wishStorage } from "../../data/constants/wish";
+import { storage_wish } from "../../data/constants/wish";
 
 interface Props {
   data: KakaoBook;
@@ -20,7 +20,7 @@ export default function ListItem({ data }: Props) {
   };
 
   const onClickWish = () => {
-    const storageItems = localStorage.getItem(wishStorage);
+    const storageItems = localStorage.getItem(storage_wish);
     let wishes: KakaoBook[] = storageItems ? JSON.parse(storageItems) : [];
 
     if (isWished) {
@@ -31,11 +31,11 @@ export default function ListItem({ data }: Props) {
       setIsWished(true);
     }
 
-    localStorage.setItem(wishStorage, JSON.stringify(wishes));
+    localStorage.setItem(storage_wish, JSON.stringify(wishes));
   };
 
   useEffect(() => {
-    const wishes = localStorage.getItem(wishStorage);
+    const wishes = localStorage.getItem(storage_wish);
     if (wishes) {
       const parsedWishes: KakaoBook[] = JSON.parse(wishes) as KakaoBook[];
       setIsWished(parsedWishes.some((book) => book.isbn === data.isbn));

@@ -1,1 +1,1 @@
-export const wishStorage = "wishStorage";
+export const storage_wish = "wishStorage";

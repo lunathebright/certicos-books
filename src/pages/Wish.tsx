@@ -3,13 +3,13 @@ import Layout from "../components/common/Layout";
 import WishResult from "../components/wish/WishResult";
 import { navItems } from "../data/constants/nav";
 import type { KakaoBook } from "../types/kakao";
-import { wishStorage } from "../data/constants/wish";
+import { storage_wish } from "../data/constants/wish";
 
 export default function Wish() {
   const [list, setList] = useState<KakaoBook[]>([]);
 
   useEffect(() => {
-    const wishes = localStorage.getItem(wishStorage);
+    const wishes = localStorage.getItem(storage_wish);
     if (wishes) {
       setList(JSON.parse(wishes));
     }
