@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import searchIcon from "/src/assets/icons/search.svg";
 import SearchHistory from "./SearchHistory";
 import SearchDetail from "./SearchDetail";
 import type { TSearchTarget } from "../../types";
-import { detailItems, historyStorage } from "../../data/constants/search";
+import { detailItems, storage_search } from "../../data/constants/search";
 
 interface Props {
   keyword: string;
@@ -29,35 +29,35 @@ export default function SearchBox({
   const [isFocused, setIsFocused] = useState(false);
   const [searchHistory, setSearchHistory] = useState<string[]>([]);
   const [isSearchDetailOpem, setIsSearchDetailOpen] = useState(false);
-  const inputContainerRef = useRef<HTMLDivElement>(null);
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setKeyword(e.target.value);
+    setIsFocused(true);
   };
 
-  const handleHistory = () => {
-    const history = [
-      keyword,
-      ...searchHistory.filter((history) => history !== keyword),
-    ].slice(0, 8);
-    localStorage.setItem("searchHistory", JSON.stringify(history));
+  const updateHistory = (keyword: string) => {
+    setSearchHistory((prev) => {
+      const newHistory = [
+        keyword,
+        ...prev.filter((history) => history !== keyword),
+      ].slice(0, 8);
+      localStorage.setItem(storage_search, JSON.stringify(newHistory));
+      return newHistory;
+    });
+  };
 
-    return history;
+  const cleanDetailKeyword = () => {
+    setDetailKeyword("");
+    setSearchTarget(detailItems[0].id as TSearchTarget);
   };
 
   const onEnterSearch = () => {
     if (!keyword) return;
-    if (detailKeyword) {
-      setDetailKeyword("");
-      setSearchTarget(detailItems[0].id as TSearchTarget);
-    }
 
-    const updatedHistory = handleHistory();
+    if (detailKeyword) cleanDetailKeyword();
+
+    updateHistory(keyword);
     handleSearch();
-
-    setSearchHistory(updatedHistory);
-    localStorage.setItem(historyStorage, JSON.stringify(updatedHistory));
-
     setIsFocused(false);
   };
 
@@ -75,27 +75,18 @@ export default function SearchBox({
     if (searchHistory.length !== 0) setIsFocused(true);
   };
 
-  const handleBlurHistory = (event: MouseEvent) => {
-    if (
-      inputContainerRef.current &&
-      !inputContainerRef.current.contains(event.target as Node)
-    ) {
-      setIsFocused(false);
-    }
+  const onBlur = () => {
+    setIsFocused(false);
   };
 
   useEffect(() => {
-    const history = localStorage.getItem(historyStorage);
+    const history = localStorage.getItem(storage_search);
     if (history) setSearchHistory(JSON.parse(history));
-
-    document.addEventListener("mousedown", handleBlurHistory);
-
-    return () => document.removeEventListener("mousedown", handleBlurHistory);
   }, []);
 
   return (
     <div className="flex gap-[16px] items-center pb-5">
-      <div ref={inputContainerRef} className="relative">
+      <div onFocus={onFocus} onBlur={onBlur} className="relative">
         <img
           src={searchIcon}
           alt="검색"
@@ -104,7 +95,6 @@ export default function SearchBox({
         <input
           onChange={onChangeInput}
           onKeyDown={onKeyDown}
-          onFocus={onFocus}
           value={keyword}
           className={`w-[480px] py-2.5 pr-2.5 pl-12 bg-lightGrey text-textSubtitle ${
             isFocused && searchHistory.length !== 0
@@ -117,6 +107,7 @@ export default function SearchBox({
           <SearchHistory
             searchHistory={searchHistory}
             setSearchHistory={setSearchHistory}
+            setKeyword={setKeyword}
           />
         )}
       </div>
