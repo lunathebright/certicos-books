@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import Button from "./base/Button";
-import arrow from "/src/assets/icons/arrowDown.svg";
 import type { KakaoBook } from "../../types/kakao";
 import { breakLines } from "../../utils";
 import likeFill from "/src/assets/icons/likeFill.svg";
 import likeLine from "/src/assets/icons/likeLine.svg";
 import { storage_wish } from "../../data/constants/wish";
+import IconArrowDown from "../../assets/icons/IconArrowDown";
 
 interface Props {
   data: KakaoBook;
@@ -78,7 +78,7 @@ export default function ListItem({ data }: Props) {
         </div>
         <div className={`${isOpen ? "ml-[32px] pt-[20px]" : "ml-[48px]"}`}>
           <div className="flex items-center">
-            <p className="text-title3">{data.title}</p>
+            <p className="text-title3 max-w-[290px] truncate">{data.title}</p>
             <p className="text-body2 text-textSecondary ml-[16px]">
               {data.authors.join(", ")}
             </p>
@@ -152,12 +152,13 @@ export default function ListItem({ data }: Props) {
           >
             <div className="flex gap-[5px]">
               <p>상세보기</p>
-              <img
-                src={arrow}
-                alt=""
-                role="presentation"
-                className={`${isOpen && "rotate-180"}`}
-              />
+              <div
+                className={`flex justify-center items-center transition-transform duration-200 ${
+                  isOpen && "rotate-180"
+                }`}
+              >
+                <IconArrowDown />
+              </div>
             </div>
           </Button>
         </div>

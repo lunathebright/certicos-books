@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import searchIcon from "/src/assets/icons/search.svg";
 import SearchHistory from "./SearchHistory";
 import SearchDetail from "./SearchDetail";
 import type { TSearchTarget } from "../../types";
 import { detailItems, storage_search } from "../../data/constants/search";
+import IconSearch from "../../assets/icons/IconSearch";
 
 interface Props {
   keyword: string;
@@ -84,11 +84,9 @@ export default function SearchBox({
   return (
     <div className="flex gap-[16px] items-center pb-5">
       <div onFocus={onFocus} onBlur={onBlur} className="relative">
-        <img
-          src={searchIcon}
-          alt="검색"
-          className="absolute top-1/2 -translate-y-1/2 left-2.5"
-        />
+        <div className="absolute top-1/2 -translate-y-1/2 left-4">
+          <IconSearch />
+        </div>
         <input
           onChange={onChangeInput}
           onKeyDown={onKeyDown}

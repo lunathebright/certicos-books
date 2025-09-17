@@ -1,5 +1,5 @@
+import IconClose from "../../assets/icons/IconClose";
 import { storage_search } from "../../data/constants/search";
-import closeIcon from "/src/assets/icons/close.svg";
 
 interface Props {
   searchHistory: string[];
@@ -33,7 +33,7 @@ export default function SearchHistory({
             {history}
           </p>
           <button onClick={() => onClickDelete(history)}>
-            <img src={closeIcon} alt="삭제" />
+            <IconClose size="16px" ariaLabel="삭제" />
           </button>
         </li>
       ))}

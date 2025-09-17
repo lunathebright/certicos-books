@@ -1,7 +1,7 @@
+import IconClose from "../../assets/icons/IconClose";
 import { detailItems } from "../../data/constants/search";
 import type { TSearchTarget } from "../../types";
 import Button from "../common/base/Button";
-import closeIcon from "/src/assets/icons/close.svg";
 
 interface Props {
   detailKeyword: string;
@@ -70,12 +70,8 @@ export default function SearchDetail({
       <Button onClick={onClickSearch} size="s" isFullWidth={true}>
         검색하기
       </Button>
-      <button onClick={onClickClose}>
-        <img
-          src={closeIcon}
-          alt="닫기"
-          className="absolute top-[8px] right-[8px] w-[20px] h-[20px]"
-        />
+      <button className="absolute top-[8px] right-[8px]" onClick={onClickClose}>
+        <IconClose iconColor="#B1B8C0" />
       </button>
     </div>
   );
