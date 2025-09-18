@@ -52,7 +52,7 @@ certicos-books/
 
 **주요 코드**
 
-- **pages/Search.tsx**
+- **pages/Search.tsx**  
   일반 검색 및 상세 검색 처리, React Query의 useInfiniteQuery를 통한 무한 스크롤 구현
 
 - **pages/Wish.tsx**  
