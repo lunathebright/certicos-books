@@ -1,69 +1,87 @@
-# React + TypeScript + Vite
+# CERTICOS BOOKS
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 프로젝트 개요
 
-Currently, two official plugins are available:
+Certicos Books는 React와 TypeScript를 기반으로 한 도서 검색 및 찜 리스트 관리 웹 애플리케이션입니다.  
+사용자는 일반 검색과 상세 검색을 통해 원하는 도서를 찾고, 찜 리스트에 저장하여 관리할 수 있습니다.  
+또한, 무한 스크롤을 적용하여 검색 결과와 찜 리스트를 편리하게 탐색할 수 있습니다.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 실행 방법 및 환경 설정
 
-## Expanding the ESLint configuration
+**실행**
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+**빌드**
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev build
 ```
+
+## 폴더 구조 및 주요 코드 설명
+
+**폴더 구조**
+
+```bash
+certicos-books/
+├─ public/
+├─ src/
+│  ├─ api/               # API 요청 함수 정의
+│  ├─ assets/            # 아이콘 및 이미지
+│  ├─ components/        # 페이지 하위 모든 컴포넌트
+│  │  ├─ common/         # Layout, ListItem, Button 등 재사용 컴포넌트
+│  │  ├─ search/         # 검색 관련 컴포넌트
+│  │  └─ wish/           # 찜 리스트 관련 컴포넌트
+│  ├─ data/              # 상수값 등의 데이터
+│  ├─ pages/             # 페이지 컴포넌트
+│  ├─ styles/
+│  ├─ types/             # 별도 타입 지정
+│  ├─ utils/             # 재사용 목적의 util 함수
+│  ├─ App.tsx
+│  └─ main.tsx
+└─ package.json
+```
+
+**주요 코드**
+
+- pages/Search.tsx : 일반 검색 및 상세 검색 처리, React Query의 useInfiniteQuery를 통한 무한 스크롤 구현
+
+- pages/Wish.tsx : 로컬 스토리지를 활용한 찜 리스트 관리 및 무한 스크롤 구현
+
+- components/common/ListItem.tsx : 검색 결과와 찜 리스트에서 공통으로 사용하는 도서 아이템 컴포넌트
+
+## 라이브러리 선택 이유
+
+- Vite
+  CRA는 공식 지원이 중단되었기 때문에 최신 개발 흐름에 맞추어 Vite를 사용했습니다. 빌드 속도와 개발 경험이 우수합니다.
+
+- TailwindCSS
+  유틸리티 퍼스트 접근 방식으로 빠른 스타일링과 일관된 디자인 시스템 구현이 가능했습니다.
+
+- Axios
+  API 요청을 단순하고 직관적으로 처리했습니다.
+
+- React 19(필수 항목)
+  컴포넌트 기반 아키텍처로 UI를 모듈화하고 유지보수가 용이합니다.
+
+- TypeScript(필수 항목)
+  정적 타입 검사로 코드 안정성과 가독성을 높였습니다.
+
+- @tanstack/react-query(필수 항목)
+  서버 상태 관리와 무한 스크롤 같은 데이터 패칭 로직을 간결하게 구현할 수 있었습니다.
+
+## 강조하고 싶은 기능
+
+- 검색 및 무한 스크롤
+  무한 스크롤을 적용하여 사용자가 더 직관적이고 편리하게 탐색할 수 있도록 했습니다. IntersectionObserver를 활용하여 성능 부담을 최소화했습니다.
+
+- 찜 리스트 관리 (로컬스토리지 연동)
+  사용자가 관심 있는 책을 로컬스토리지에 저장하여 새로고침이나 브라우저를 닫았다가 다시 열어도 리스트가 유지되도록 했습니다. 단순 저장 외에도, 삭제 및 무한 스크롤 탐색이 가능하도록 구현했습니다.
+
+- 재사용 가능한 컴포넌트 구조
+  버튼, 리스트 아이템, 레이아웃 같은 UI 요소를 분리하여 다양한 페이지에서 재활용할 수 있게 했습니다. Props 설계를 통해 디자인과 기능을 쉽게 확장할 수 있도록 고민했습니다.
+
+- 검색 옵션 확장성 고려
+  기본 검색뿐만 아니라 상세 검색 기능을 추가하여, 추후 필터 조건이 늘어나더라도 쉽게 확장할 수 있는 구조를 염두에 두었습니다.
