@@ -12,11 +12,25 @@ Certicos Books는 React와 TypeScript를 기반으로 한 도서 검색 및 찜 
 
 ## 실행 방법 및 환경 설정
 
-**실행**
+**사전 요구사항**
+
+- Node.js v18이상 (권장: v20 이상)
+- npm v9 이상
+
+**패키지 설치**
+
+```bash
+npm install
+```
+
+**개발 서버 실행**
 
 ```bash
 npm run dev
 ```
+
+**실행 후**  
+http://localhost:5173
 
 **빌드**
 
